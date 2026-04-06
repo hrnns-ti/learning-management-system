@@ -19,6 +19,21 @@ export default function Login() {
         fill={true}
         className="z-0 opacity-10 object-cover"
       />
+
+      {state?.message && (
+        <div className="fixed top-5 right-5 z-50 flex items-center justify-between w-80 p-4 rounded-lg shadow-lg border bg-red-50 text-red-800 border-red-200 animate-in fade-in slide-in-from-top-4 duration-300">
+          <div className="flex items-center gap-3">
+            <span className="font-bold">⚠</span>
+            <p className="text-sm font-medium leading-none">{state.message}</p>
+          </div>
+          <button 
+            onClick={(e) => (e.currentTarget.parentElement!.style.display = 'none')}
+            className="text-lg font-bold opacity-50 hover:opacity-100 transition-opacity ml-4"
+          >
+            &times;
+          </button>
+        </div>
+      )}
       
       {/* LOGIN CARD */}
       <main className="z-10 flex w-full max-w-3xl h-128 gap-10 rounded-xl flex-row p-4 bg-white dark:bg-black items-center shadow-md">
