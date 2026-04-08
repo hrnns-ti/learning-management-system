@@ -15,7 +15,6 @@ export async function proxy(request: NextRequest) {
       return NextResponse.redirect(new URL('/login', request.url))
     }
 
-    // Ambil role dari tabel profiles
     const { data: profile } = await supabase
       .from('profiles')
       .select('role')
