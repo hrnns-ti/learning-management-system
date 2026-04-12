@@ -1,8 +1,6 @@
 "use server"
 
 import { createClient } from '@/lib/supabase/server'
-
-export const runtime = 'experimental-edge'
 export type ActionState = { message: string } | null
 
 export async function handleRegister(prevState: ActionState, formData: FormData) {

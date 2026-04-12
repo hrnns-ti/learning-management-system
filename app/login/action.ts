@@ -3,8 +3,6 @@
 import { createClient } from "@/lib/supabase/server"
 import { redirect } from "next/navigation"
 
-export const runtime = 'experimental-edge'
-
 export type ActionState = { message: string } | null
 
 export async function handleLogin(prevState: ActionState, formData: FormData) {
