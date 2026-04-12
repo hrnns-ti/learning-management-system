@@ -8,6 +8,8 @@ import { handleRegister } from "./action";
 import { useActionState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
+export const runtime = 'experimental-edge';
+
 export default function Register() {
 
   const [state, formAction, isPending] = useActionState(handleRegister, null)

@@ -7,6 +7,8 @@ import Link from "next/link";
 import { handleLogin } from "./action";
 import { useActionState } from "react";
 
+export const runtime = 'experimental-edge';
+
 export default function Login() {
 
   const [state, formAction, isPending] = useActionState(handleLogin, null)
