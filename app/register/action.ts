@@ -2,6 +2,7 @@
 
 import { createClient } from '@/lib/supabase/server'
 
+export const runtime = 'experimental-edge'
 export type ActionState = { message: string } | null
 
 export async function handleRegister(prevState: ActionState, formData: FormData) {
@@ -21,7 +22,7 @@ export async function handleRegister(prevState: ActionState, formData: FormData)
                 username: username,
                 full_name: username,
             },
-            emailRedirectTo: 'http://localhost:3000/auth/callback',
+            emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/auth/callback`,
         }
     })
 
