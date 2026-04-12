@@ -8,19 +8,50 @@ export const runtime = 'experimental-edge'
 export type ActionState = { message: string } | null
 
 export async function handleLogin(prevState: ActionState, formData: FormData) {
+  let redirectPath: string | null = null;
+
+  try {
     const email = formData.get("email") as string
     const password = formData.get("password") as string
 
+    console.log("Mencoba login untuk:", email);
+
     const supabase = await createClient()
     
-    const { data, error } = await supabase.auth.signInWithPassword({ email,password })
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password })
 
-    if (error) return { message: error.message }
+    if (error) {
+      console.error("Login Error:", error.message);
+      return { message: error.message }
+    }
 
-    const { data: myProfile } = await supabase.from('profiles').select('role').eq('id', data.user.id).maybeSingle()
+    const { data: myProfile, error: profileError } = await supabase
+      .from('profiles')
+      .select('role')
+      .eq('id', data.user.id)
+      .maybeSingle()
     
-    if (myProfile?.role === 'ADMIN') { redirect('/admin/dashboard') }
-    if (myProfile?.role === 'STUDENT') { redirect('/user/dashboard') }
+    if (profileError) {
+      console.error("Profile Fetch Error:", profileError.message);
+      return { message: "Gagal memuat data profil. Silakan coba lagi." }
+    }
     
-    redirect('/dashboard')
+    if (myProfile?.role === 'ADMIN') { 
+      redirectPath = '/admin/dashboard' 
+    } else if (myProfile?.role === 'STUDENT') { 
+      redirectPath = '/user/dashboard' 
+    } else {
+      redirectPath = '/dashboard'
+    }
+
+  } catch (err: any) {
+    console.error("🔥 CRITICAL SERVER ERROR LOGIN:", err.message, err.stack);
+    return { message: `Sistem Error: ${err.message}` }
+  }
+
+  if (redirectPath) {
+    redirect(redirectPath)
+  }
+  
+  return { message: "Memproses login..." }
 }
